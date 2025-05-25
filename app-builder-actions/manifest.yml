@@ -1,0 +1,135 @@
+# Basic manifest.yml for Adobe App Builder
+# For newer App Builder CLI versions, this might be ext.config.yaml
+
+packages:
+  myaemproject-appbuilder: # Package name, can be customized
+    license: Apache-2.0
+    actions:
+      kaltura-auth:
+        function: actions/kaltura-auth/index.js
+        web: 'yes' # or 'no' if it's not a web action
+        runtime: 'nodejs:18' # Specify Node.js version
+        inputs:
+          LOG_LEVEL: debug
+          KALTURA_USER: $KALTURA_USER # Example of using environment variables
+          KALTURA_PASSWORD: $KALTURA_PASSWORD
+        annotations:
+          require-adobe-auth: false # Example annotation
+          final: true # Mark as final if it's a sequence component
+      video-upload:
+        function: actions/video-upload/index.js
+        web: 'yes' # Should accept POST requests
+        runtime: 'nodejs:18'
+        inputs:
+          LOG_LEVEL: debug
+          kaltura_api_url: $KALTURA_API_URL
+          kaltura_access_token: $KALTURA_ACCESS_TOKEN # OAuth2 token
+          videoFile: $VIDEO_FILE_BASE64 # Base64 encoded video file content
+          video_filename: $VIDEO_FILENAME # e.g., "my_awesome_video.mp4"
+          video_title: $VIDEO_TITLE # Optional
+          video_description: $VIDEO_DESCRIPTION # Optional
+        outputs:
+          entryId: String
+          name: String
+          description: String
+          kalturaResponse: Object
+        annotations:
+          require-adobe-auth: false # Assuming token is passed directly
+          final: true
+      kaltura-video-details:
+        function: actions/kaltura-video-details/index.js
+        web: 'yes'
+        runtime: 'nodejs:18'
+        inputs:
+          LOG_LEVEL: debug
+          kaltura_api_url: $KALTURA_API_URL
+          kaltura_access_token: $KALTURA_ACCESS_TOKEN # or ks
+          ks: $KALTURA_KS # alias for kaltura_access_token
+          entry_id: $KALTURA_ENTRY_ID
+        outputs:
+          entryId: String
+          title: String
+          description: String
+          duration: Integer
+          thumbnailUrl: String
+          playbackUrls: Array # Array of objects { type, mimeType, url, width, height, bitrate, tags, flavorId, assetId }
+        annotations:
+          require-adobe-auth: false
+          final: true
+      kaltura-generate-thumbnail:
+        function: actions/kaltura-generate-thumbnail/index.js
+        web: 'yes'
+        runtime: 'nodejs:18'
+        inputs:
+          LOG_LEVEL: debug
+          kaltura_api_url: $KALTURA_API_URL
+          kaltura_access_token: $KALTURA_ACCESS_TOKEN # or ks
+          ks: $KALTURA_KS # alias for kaltura_access_token
+          entry_id: $KALTURA_ENTRY_ID
+          timecode_ms: $TIMECODE_MS # Timecode in milliseconds
+          set_as_default: $SET_AS_DEFAULT # boolean, optional, defaults to true in action
+        outputs:
+          status: String
+          message: String
+          thumbnail_asset_id: String
+          new_thumbnail_url: String
+          kaltura_entry_id: String
+        annotations:
+          require-adobe-auth: false # Assuming token is passed directly
+          final: true
+      kaltura-event-handler:
+        function: actions/kaltura-event-handler/index.js
+        web: 'no' # This action is triggered by I/O Events, not direct HTTP calls typically
+        runtime: 'nodejs:18'
+        inputs:
+          LOG_LEVEL: debug
+          # Parameters configured for this action
+          aem_webhook_url: $AEM_WEBHOOK_URL # URL of the AEM KalturaWebhookReceiverServlet
+          aem_webhook_apikey: $AEM_WEBHOOK_APIKEY # Shared secret for AEM servlet
+          # Parameters needed if this action calls 'kaltura-video-details'
+          kaltura_video_details_action_url: $KALTURA_VIDEO_DETAILS_ACTION_URL # URL of the kaltura-video-details action
+          kaltura_api_url_for_details: $KALTURA_API_URL # Kaltura API base URL (e.g. https://api.kaltura.com/api_v3/service)
+          kaltura_ks_for_details: $KALTURA_ADMIN_KS # Admin KS/token for calling kaltura-video-details
+        annotations:
+          final: true
+          # Placeholder for Adobe I/O Event registration
+          # Actual provider_id and event_codes would be specific to your Kaltura integration with Adobe I/O Events.
+          # This tells App Builder to subscribe this action to these events.
+          events:
+            provider_id: 'kaltura_event_provider_placeholder' # e.g., a custom Kaltura event provider ID or Adobe I/O's generic one
+            event_codes: ['kaltura_entry_updated_placeholder', 'kaltura_entry_deleted_placeholder', 'kaltura_flavor_ready_placeholder'] # Example event codes
+      kaltura-oauth-handler:
+        function: actions/kaltura-oauth-handler/index.js
+        web: 'yes' # Web action to be callable via HTTP
+        runtime: 'nodejs:18' # Or your preferred Node.js version
+        inputs:
+          LOG_LEVEL: debug
+          # Parameters for start_auth
+          kaltura_auth_url: $KALTURA_AUTH_URL
+          client_id: $KALTURA_CLIENT_ID
+          redirect_uri: $KALTURA_REDIRECT_URI # This would be the URL of this action itself (handle_callback part)
+          state: $STATE_STRING # Passed by the client initiating the auth flow
+          scope: $KALTURA_SCOPES # Optional
+          # Parameters for handle_callback
+          code: $AUTH_CODE # Passed by Kaltura in the callback
+          # client_id, client_secret, kaltura_token_url, redirect_uri are also needed for handle_callback
+          # client_secret should be a secret param
+          client_secret: $KALTURA_CLIENT_SECRET
+          kaltura_token_url: $KALTURA_TOKEN_URL
+          handler_type: $HANDLER_TYPE # 'start_auth' or 'handle_callback'
+        outputs: # Example outputs, not strictly enforced but good for documentation
+          authorization_url: String # For start_auth
+          access_token: String # For handle_callback
+          refresh_token: String # For handle_callback
+          expires_in: Integer # For handle_callback
+          error: String # For errors
+        annotations:
+          require-adobe-auth: false # Typically false for public OAuth callbacks, but depends on overall design
+          final: true
+
+# You can define sequences, APIs, and events here as well
+# Example of a sequence:
+# sequences:
+#   upload-video-sequence:
+#     actions: kaltura-auth, video-upload
+#     web: 'yes'

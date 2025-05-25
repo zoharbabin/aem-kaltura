@@ -1,0 +1,24 @@
+{
+  "name": "app-builder-actions",
+  "version": "1.0.0",
+  "description": "Adobe App Builder actions for AEM integration with Kaltura",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "adobe",
+    "app-builder",
+    "aem",
+    "kaltura"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "form-data": "^4.0.0"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}

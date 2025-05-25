@@ -1,0 +1,43 @@
+<div data-sly-use.model="com.example.core.models.KalturaVideoPlayerModel" class="kaltura-video-player">
+    <sly data-sly-test="${model.errorMessage}">
+        <div class="kaltura-error-message" style="color: red; border: 1px solid red; padding: 10px;">
+            <p>Error loading Kaltura video:</p>
+            <p>${model.errorMessage}</p>
+        </div>
+    </sly>
+
+    <sly data-sly-test="${!model.errorMessage && model.ready}">
+        <h3 data-sly-test="${model.title}">${model.title}</h3>
+        <p data-sly-test="${model.description}">${model.description}</p>
+
+        <video controls
+               width="100%"
+               poster="${model.thumbnailUrl}"
+               preload="metadata"
+               aria-labelledby="videoTitle-${resource.name}"
+               aria-describedby="videoDesc-${resource.name}">
+
+            <sly data-sly-list.playbackUrl="${model.playbackUrls}">
+                <source src="${playbackUrl.url}" type="${playbackUrl.type}"/>
+            </sly>
+
+            <!-- Fallback for browsers that don't support the video tag or any provided source types -->
+            <p>Your browser does not support HTML5 video, or no suitable video formats are available.</p>
+            <sly data-sly-test="${model.thumbnailUrl}">
+                <p>You can <a href="${model.thumbnailUrl}" target="_blank">view the thumbnail</a> instead.</p>
+            </sly>
+        </video>
+
+        <!-- Hidden metadata for accessibility, referenced by aria-labelledby and aria-describedby -->
+        <span id="videoTitle-${resource.name}" style="display:none;">${model.title || 'Kaltura Video'}</span>
+        <span id="videoDesc-${resource.name}" style="display:none;">${model.description || 'Video content from Kaltura.'}</span>
+
+    </sly>
+    <sly data-sly-test="${!model.errorMessage && !model.ready && !model.kalturaEntryId}">
+         <p>Please configure the Kaltura Entry ID in the component dialog.</p>
+    </sly>
+     <sly data-sly-test="${!model.errorMessage && !model.ready && model.kalturaEntryId && model.playbackUrls.empty}">
+         <p>No playable video formats found for Kaltura Entry ID: ${model.kalturaEntryId}. Check Kaltura configuration or video processing status.</p>
+    </sly>
+</div>
+<sly data-sly-call="${clientLib.css @ categories='myaemproject.kaltura-player-styles'}"></sly>

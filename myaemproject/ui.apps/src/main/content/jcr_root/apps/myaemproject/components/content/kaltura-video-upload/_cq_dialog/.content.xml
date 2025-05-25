@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="Kaltura Video Upload Properties"
+          sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <videoDetailsTab
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Video Details"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                margin="{Boolean}true">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <column
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <videoTitle
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                fieldLabel="Video Title"
+                                                name="./videoTitle"/>
+                                            <videoDescription
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                                                fieldLabel="Video Description"
+                                                name="./videoDescription"/>
+                                            <kalturaEntryId
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
+                                                name="./kalturaEntryId"
+                                                granite:class="kaltura-entry-id-dialog-field"/>
+                                            <statusMessageDisplay
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/displayfield"
+                                                fieldLabel="Upload Status"
+                                                granite:class="kaltura-upload-status-dialog-display"
+                                                value="Not uploaded yet. Use the component's 'Upload to Kaltura' button on the page."/>
+                                        </items>
+                                    </column>
+                                </items>
+                            </columns>
+                        </items>
+                    </videoDetailsTab>
+                    <uploadTab
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Upload New Video"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                             <alert
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/alert"
+                                variant="info"
+                                text="Use the 'Upload to Kaltura' functionality directly on the page component. This tab is for metadata reference. If you need to re-upload, configure title/description here or on the page, then use the on-page upload button."/>
+                            <fileUploadNote
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/text"
+                                text="Note: File selection and upload are handled directly on the component's rendered view on the page, not through this dialog field. This dialog is primarily for setting metadata or viewing the Kaltura Entry ID after a successful upload."/>
+
+                            <!-- This fileupload is more for show or if a different workflow was used -->
+                             <file
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/fileupload"
+                                fieldLabel="Video File (Reference)"
+                                name="./fileReferenceDisabled"
+                                disabled="{Boolean}true"
+                                autoStart="{Boolean}false"
+                                class="cq-droptarget"
+                                fileNameParameter="./fileNameDisabled"
+                                fileReferenceParameter="./fileReferenceDisabled"
+                                mimeTypes="[video/mp4,video/mpeg,video/quicktime,video/x-msvideo]"
+                                multiple="{Boolean}false"
+                                sizeLimit="1073741824"
+                                uploadUrl="will_be_overridden_by_js.json"
+                                useHTML5="{Boolean}true"/>
+                        </items>
+                    </uploadTab>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>

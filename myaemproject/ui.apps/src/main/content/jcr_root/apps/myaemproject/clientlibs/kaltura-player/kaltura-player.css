@@ -1,0 +1,24 @@
+.kaltura-video-player {
+    margin-bottom: 15px;
+}
+
+.kaltura-video-player video {
+    max-width: 100%;
+    height: auto;
+    background-color: #000; /* Black background for letterboxing if aspect ratio mismatches */
+}
+
+.kaltura-error-message {
+    color: red;
+    border: 1px solid red;
+    padding: 10px;
+    background-color: #ffe0e0;
+}
+
+.kaltura-video-player h3 {
+    margin-top: 0;
+}
+
+.kaltura-video-player p {
+    margin-bottom: 10px;
+}

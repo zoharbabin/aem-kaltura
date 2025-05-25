@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>myaemproject</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>myaemproject.ui.config</artifactId>
+    <packaging>content-package</packaging>
+
+    <name>My AEM Project - UI Config</name>
+    <description>UI Config package for My AEM Project</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>aem-sdk-api</artifactId>
+            <version>2023.10.13668.20231013T100123Z-231000</version> <!-- Use a relevant AEM SDK version -->
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.jackrabbit</groupId>
+                <artifactId>filevault-package-maven-plugin</artifactId>
+                <version>1.1.6</version> <!-- Use a relevant version -->
+                <extensions>true</extensions>
+                <configuration>
+                    <group>com.example</group>
+                    <name>myaemproject.ui.config</name>
+                    <packageType>application</packageType>
+                    <accessControlHandling>merge</accessControlHandling>
+                    <properties>
+                        <cloudManagerTarget>none</cloudManagerTarget>
+                    </properties>
+                    <filters>
+                        <!-- Define filters for OSGi configurations, e.g., /apps/myaemproject/osgiconfig.runmode -->
+                        <filter><root>/apps/myaemproject/osgiconfig.author</root></filter>
+                        <filter><root>/apps/myaemproject/osgiconfig.publish</root></filter>
+                        <!-- Add other run mode specific configurations as needed -->
+                    </filters>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

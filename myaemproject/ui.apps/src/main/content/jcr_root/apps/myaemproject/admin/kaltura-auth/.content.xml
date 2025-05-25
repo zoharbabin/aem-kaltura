@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          jcr:primaryType="cq:Page">
+    <jcr:content
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Kaltura OAuth Configuration"
+        sling:resourceType="granite/ui/components/shell/page"
+        consoleId="myaemproject-kaltura-auth-admin">
+        <head jcr:primaryType="nt:unstructured">
+            <favicon
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/page/favicon"/>
+            <viewport
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/page/viewport"/>
+            <meta
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/meta"
+                name="theme"
+                content="light"/>
+        </head>
+        <body jcr:primaryType="nt:unstructured"
+              sling:resourceType="granite/ui/components/coral/foundation/page/body">
+            <items jcr:primaryType="nt:unstructured">
+                <content
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                    <items jcr:primaryType="nt:unstructured">
+                        <!-- The actual form content will be defined in a separate file or inline here -->
+                        <column
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="granite/ui/components/coral/foundation/container">
+                            <items jcr:primaryType="nt:unstructured">
+                                <title
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/heading"
+                                    level="{Long}1"
+                                    text="Kaltura OAuth2 Configuration"/>
+                                <status
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/text"
+                                    text="Status: Not Connected (To be made dynamic)"
+                                    margin="{Boolean}true"
+                                    id="kaltura-connection-status"/>
+                                <kalturaAuthForm
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="granite/ui/components/coral/foundation/form"
+                                    action="/bin/myaemproject/admin/kaltura/oauth/start"
+                                    method="POST"
+                                    style="vertical"
+                                    maximized="{Boolean}true">
+                                    <items jcr:primaryType="nt:unstructured">
+                                        <kalturaClientId
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Kaltura Client ID"
+                                            name="kalturaClientId"
+                                            required="{Boolean}true"/>
+                                        <kalturaClientSecret
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/password"
+                                            fieldLabel="Kaltura Client Secret"
+                                            name="kalturaClientSecret"
+                                            required="{Boolean}true"/>
+                                        <kalturaAuthUrl
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Kaltura Auth URL"
+                                            name="kalturaAuthUrl"
+                                            required="{Boolean}true"
+                                            value="https://api.kaltura.com/v2/oauth2/authorize"/>
+                                        <kalturaTokenUrl
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="Kaltura Token URL"
+                                            name="kalturaTokenUrl"
+                                            required="{Boolean}true"
+                                            value="https://api.kaltura.com/v2/oauth2/token"/>
+                                        <appBuilderOAuthHandlerUrl
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                            fieldLabel="App Builder OAuth Handler URL"
+                                            name="appBuilderOAuthHandlerUrl"
+                                            required="{Boolean}true"/>
+                                        <submitButton
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/button"
+                                            text="Connect to Kaltura"
+                                            type="submit"
+                                            variant="primary"/>
+                                    </items>
+                                </kalturaAuthForm>
+                            </items>
+                        </column>
+                    </items>
+                </content>
+            </items>
+        </body>
+    </jcr:content>
+</jcr:root>

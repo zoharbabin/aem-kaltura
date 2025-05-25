@@ -1,0 +1,45 @@
+<div data-sly-use.model="com.example.core.models.KalturaVideoModel"  <!-- Assuming a simple model to get properties -->
+     class="kaltura-video-upload-container"
+     data-component-path="${resource.path}">
+
+    <h3>${properties.videoTitle ? 'Video: ' + properties.videoTitle : 'Upload New Video to Kaltura'}</h3>
+
+    <sly data-sly-test="${!properties.kalturaEntryId}">
+        <form class="kaltura-upload-form" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="kalturaVideoFile">Select Video File:</label>
+                <input type="file" id="kalturaVideoFile-${resource.name}" name="kalturaVideoFile" class="kaltura-video-file-input" accept="video/*" required/>
+                <input type="hidden" name="videoFileName" class="kaltura-video-filename-hidden"/>
+            </div>
+            <div>
+                <label for="kalturaVideoTitle">Video Title:</label>
+                <input type="text" id="kalturaVideoTitle-${resource.name}" name="kalturaVideoTitle" class="kaltura-video-title-input" value="${properties.videoTitle}"/>
+            </div>
+            <div>
+                <label for="kalturaVideoDescription">Video Description:</label>
+                <textarea id="kalturaVideoDescription-${resource.name}" name="kalturaVideoDescription" class="kaltura-video-description-input">${properties.videoDescription}</textarea>
+            </div>
+            <button type="button" class="kaltura-upload-button">Upload to Kaltura</button>
+        </form>
+        <div class="kaltura-upload-status" style="margin-top: 10px;"></div>
+        <div class="kaltura-thumbnail-display" style="margin-top: 10px;">
+            <sly data-sly-test="${properties.kalturaThumbnailUrl}">
+                <p>Current Thumbnail:</p>
+                <img src="${properties.kalturaThumbnailUrl}" alt="Video Thumbnail" style="max-width: 320px; max-height: 180px; border: 1px solid #ccc;"/>
+            </sly>
+        </div>
+    </sly>
+
+    <sly data-sly-test="${properties.kalturaEntryId && !isEditMode}"> <!-- Assuming isEditMode is available or use wcmmode.edit -->
+        <p>Kaltura Video Entry ID: <strong>${properties.kalturaEntryId}</strong></p>
+        <p data-sly-test="${properties.videoTitle}">Title: ${properties.videoTitle}</p>
+        <p data-sly-test="${properties.videoDescription}">Description: ${properties.videoDescription}</p>
+        <div class="kaltura-thumbnail-display-view" style="margin-top: 10px;">
+            <sly data-sly-test="${properties.kalturaThumbnailUrl}">
+                <img src="${properties.kalturaThumbnailUrl}" alt="${properties.videoTitle || 'Video Thumbnail'}" style="max-width: 100%; height: auto;"/>
+            </sly>
+        </div>
+        <p><em>To upload a new video or change details, please edit the component.</em></p>
+    </sly>
+    <sly data-sly-call="${clientLib.js @ categories='myaemproject.kaltura-upload'}"></sly>
+</div>

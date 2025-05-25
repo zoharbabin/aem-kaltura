@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="Kaltura Video Player"
+          sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <properties
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Kaltura Video"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                margin="{Boolean}true">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <column
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <kalturaEntryId
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                                fieldLabel="Kaltura Entry ID"
+                                                fieldDescription="Enter the Kaltura Video Entry ID to play."
+                                                name="./kalturaEntryId"
+                                                required="{Boolean}true"/>
+                                            <!-- Hidden field to store component path for JS -->
+                                            <componentPath
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
+                                                name="./componentPath"
+                                                value="${requestPathInfo.resourcePath}"/>
+                                        </items>
+                                    </column>
+                                </items>
+                            </columns>
+                        </items>
+                    </properties>
+                    <thumbnailManagementTab
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Thumbnail Management"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                margin="{Boolean}true">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <column
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <currentThumbnailInfo
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/text"
+                                                text="Current default thumbnail is displayed on the page. Use below to generate a new one."/>
+                                            <thumbnailTimecodeMs
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
+                                                fieldLabel="Generate Thumbnail at Timecode (ms)"
+                                                fieldDescription="Enter the timecode in milliseconds (e.g., 5000 for 5 seconds) to capture a new thumbnail."
+                                                name="./thumbnailTimecodeMs"
+                                                min="0"/>
+                                            <generateThumbnailButton
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/button"
+                                                text="Generate and Set New Default Thumbnail"
+                                                granite:class="kaltura-generate-thumbnail-button"/>
+                                            <thumbnailGenerationStatus
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/text"
+                                                granite:class="kaltura-thumbnail-generation-status"
+                                                text=""/> <!-- Status will be updated by JS -->
+                                        </items>
+                                    </column>
+                                </items>
+                            </columns>
+                        </items>
+                    </thumbnailManagementTab>
+                </items>
+            </tabs>
+        </items>
+    </content>
+    <granite:clientlibs
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/includeclientlibs"
+        js="myaemproject.kaltura-player.dialog"/>
+</jcr:root>
