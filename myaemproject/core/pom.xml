@@ -112,11 +112,80 @@
             <scope>provided</scope> <!-- AEM usually provides a version of this -->
         </dependency>
 
+        <!-- JUnit 5 for testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito for mocking dependencies -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.5.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>4.5.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- AEM Mocks for context -->
+        <dependency>
+            <groupId>io.wcm</groupId>
+            <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
+            <version>4.1.14</version> 
+            <scope>test</scope>
+        </dependency>
+        <!-- Sling Mocks -->
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.testing.sling-mock.junit5</artifactId>
+            <version>3.3.2</version>
+            <scope>test</scope>
+        </dependency>
+
+
         <!-- Add other necessary dependencies like Lombok, JUnit, etc. -->
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                  <configLocation>../checkstyle.xml</configLocation> <!-- Relative to core/pom.xml -->
+                  <encoding>UTF-8</encoding>
+                  <consoleOutput>true</consoleOutput>
+                  <failsOnError>true</failsOnError>
+                  <linkXRef>false</linkXRef>
+                </configuration>
+                <executions>
+                  <execution>
+                    <id>validate</id>
+                    <phase>validate</phase>
+                    <goals>
+                      <goal>check</goal>
+                    </goals>
+                  </execution>
+                </executions>
+              </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -129,13 +198,26 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
                             com.example.core.servlets.*,
-                            com.example.core.config.*
+                            com.example.core.config.*,
+                            com.example.core.models.*,
+                            com.example.core.schedulers.*,
+                            com.example.core.services.*
                         </Export-Package>
                         <Provide-Capability>
-                            osgi.service;objectClass:List<String>="com.example.core.config.KalturaConfig"
+                            osgi.service;objectClass:List<String>="com.example.core.config.KalturaConfig",
+                            osgi.service;objectClass:List<String>="com.example.core.services.KalturaConfigManager",
+                            osgi.service;objectClass:List<String>="java.lang.Runnable"
                         </Provide-Capability>
                         <!-- Add other OSGi instructions as needed -->
                     </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M7</version> <!-- Use a recent version -->
+                <configuration>
+                    <!-- Add any specific Surefire configurations here -->
                 </configuration>
             </plugin>
         </plugins>

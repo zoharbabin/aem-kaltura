@@ -4,7 +4,9 @@
   "description": "Adobe App Builder actions for AEM integration with Kaltura",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint actions/**/*.js test/**/*.js",
+    "lint:fix": "eslint actions/**/*.js test/**/*.js --fix"
   },
   "keywords": [
     "adobe",
@@ -19,6 +21,9 @@
     "form-data": "^4.0.0"
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "eslint": "^8.0.0",  సూచన Use a recent version, e.g., 8.x
+    "eslint-config-airbnb-base": "^15.0.0", సూచన Use a recent version
+    "eslint-plugin-import": "^2.25.0" సూచన Use a recent version
   }
 }
